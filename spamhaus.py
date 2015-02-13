@@ -49,19 +49,22 @@ zen_return_codes = {'127.0.1.2': 'Spam domain',
 class SpamhausChecker:
 
     sp_response = {'status': '0',
-                   'response_code': ''}
+                   'response_code': '',
+                   'url': ''}
 
     def __init__(self):
         pass
 
     def reset_response(self):
         self.sp_response = {'status': '0',
-                   'response_code': ''}
+                   'response_code': '',
+                   'url': ''}
 
 
     def check_status(self, ip_address):
         self.reset_response()
         sp_resolver = dns.resolver.Resolver()
+        #sp_resolver.nameservers = ['8.8.8.8']
 
         try:
 
@@ -70,10 +73,12 @@ class SpamhausChecker:
             answers = sp_resolver.query(_r_name)
 
             for rdata in answers:
-                #print 'Host %s' %rdata.address
+                _url = 'http://www.spamhaus.org/query/bl?ip='+ip_address
                 self.sp_response = {'status': '1',
-                                    'response_code': zen_return_codes[rdata.address]}
-        except Exception,e:
+                                    'response_code':
+                                    zen_return_codes[rdata.address],
+                                    'url': _url}
+        except Exception, e:
             pass
 
         return self.sp_response
