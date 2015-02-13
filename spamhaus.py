@@ -52,17 +52,14 @@ class SpamhausChecker:
                    'response_code': '',
                    'url': ''}
 
-    def __init__(self):
-        pass
-
-    def reset_response(self):
+    @staticmethod
+    def _reset_response(self):
         self.sp_response = {'status': '0',
-                   'response_code': '',
-                   'url': ''}
-
+                            'response_code': '',
+                            'url': ''}
 
     def check_status(self, ip_address):
-        self.reset_response()
+        self._reset_response(self)
         sp_resolver = dns.resolver.Resolver()
         #sp_resolver.nameservers = ['8.8.8.8']
 
